@@ -63,9 +63,9 @@ export default function Simulator() {
         }
     }, [diameter, cutDistance]);
 
-    const radius_mm = diameter / 2;
+    const radius_mm = Math.max(1, diameter / 2);
     const cut_x_from_center = radius_mm - cutDistance;
-    const scaleFactor = 400 / diameter;
+    const scaleFactor = diameter > 0 ? 400 / diameter : 1;
     const mappedCutLine = cut_x_from_center * scaleFactor;
     const radius = 200; // SVG scale mapping
 
@@ -99,9 +99,15 @@ export default function Simulator() {
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
                                     <label className="text-zinc-300 font-medium tracking-wide">鏡の直径 (mm)</label>
-                                    <span className="text-xl text-white font-light tracking-wider bg-zinc-950 px-3 py-1 rounded-md border border-zinc-800">
-                                        {diameter}<span className="text-sm text-zinc-500 ml-1">mm</span>
-                                    </span>
+                                    <div className="flex items-center bg-zinc-950 rounded-md border border-zinc-800 px-2 py-1 focus-within:border-amber-500/50 transition-colors">
+                                        <input
+                                            type="number"
+                                            value={diameter === 0 ? "" : diameter}
+                                            onChange={(e) => setDiameter(Number(e.target.value))}
+                                            className="w-20 bg-transparent text-xl text-white font-light tracking-wider outline-none text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        />
+                                        <span className="text-sm text-zinc-500 ml-1">mm</span>
+                                    </div>
                                 </div>
                                 <input
                                     type="range"
@@ -121,9 +127,15 @@ export default function Simulator() {
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
                                     <label className="text-zinc-300 font-medium tracking-wide">端からの切断距離 (mm)</label>
-                                    <span className="text-xl text-white font-light tracking-wider bg-zinc-950 px-3 py-1 rounded-md border border-zinc-800">
-                                        {cutDistance}<span className="text-sm text-zinc-500 ml-1">mm</span>
-                                    </span>
+                                    <div className="flex items-center bg-zinc-950 rounded-md border border-zinc-800 px-2 py-1 focus-within:border-amber-500/50 transition-colors">
+                                        <input
+                                            type="number"
+                                            value={cutDistance === 0 ? "" : cutDistance}
+                                            onChange={(e) => setCutDistance(Number(e.target.value))}
+                                            className="w-20 bg-transparent text-xl text-white font-light tracking-wider outline-none text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        />
+                                        <span className="text-sm text-zinc-500 ml-1">mm</span>
+                                    </div>
                                 </div>
                                 <input
                                     type="range"
